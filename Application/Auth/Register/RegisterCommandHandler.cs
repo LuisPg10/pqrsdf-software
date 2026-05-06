@@ -13,7 +13,7 @@ public class RegisterCommandHandler(IUserRepository userRepository, ITokenHandle
     var alreadyExist = await userRepository.UserExists(request.Email);
     if (alreadyExist) return Error.Validation("User.AlreadyExists", "User already exists");
 
-    request.Password = tokenHandler.EncryptText(request.Password);
+    request.Password = HashPassword.Hash(request.Password);
 
     var user = request.Adapt<User>();
     userRepository.Create(user);

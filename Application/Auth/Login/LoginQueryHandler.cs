@@ -8,10 +8,11 @@ public class LoginQueryHandler(IUserRepository userRepository, ITokenHandler tok
 {
   public async Task<ErrorOr<AuthResponseDto>> Handle(LoginQueryDto request, CancellationToken cancellationToken)
   {
-    var password = tokenHandler.EncryptText(request.Password);
-
-    var user = await userRepository.GetUserByEmailOrPassword(request.Email, password);
+    var user = await userRepository.GetUserByEmail(request.Email);
     if (user == null) return Error.NotFound("User.NotFound", "Incorrect email or password");
+
+    var isPasswordValid = HashPassword.Verify(request.Password, user.Password);
+    if (!isPasswordValid) return Error.Validation("User.InvalidPassword", "Incorrect email or password");
 
     return new AuthResponseDto
     {
