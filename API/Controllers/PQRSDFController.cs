@@ -1,5 +1,6 @@
 using Application.Clients.CreatePQRSDF;
 using Application.Clients.GetPQRSDF;
+using Application.Users.AssignPQRSDF;
 using Application.Users.GetPQRSDFDetails;
 
 namespace API.Controllers;
@@ -55,6 +56,23 @@ public class PQRSDFController(ISender mediator) : ApiController
 
     return result.Match(
       Ok,
+      Problem
+    );
+  }
+
+  [HttpPatch("{id}/assign")]
+  [ProducesResponseType(StatusCodes.Status204NoContent)]
+  [ProducesResponseType(StatusCodes.Status404NotFound)]
+  [ProducesResponseType(StatusCodes.Status403Forbidden)]
+  [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+  [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+  public async Task<IActionResult> Assign([FromQuery] string userId, string id, CancellationToken cancellationToken)
+  {
+    var command = new AssignPQRSDFCommandDto() { SolicitudeId = Guid.Parse(id), FunctionaryId = Guid.Parse(userId) };
+    var result = await mediator.Send(command, cancellationToken);
+
+    return result.Match(
+      _ => NoContent(),
       Problem
     );
   }

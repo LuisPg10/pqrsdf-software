@@ -1,4 +1,3 @@
-using Domain.Entities.Solicitudes;
 using Domain.Entities.Users;
 using Domain.Repositories;
 using Infraestructure.Shared.Repositories;

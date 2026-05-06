@@ -15,7 +15,7 @@ public class Solicitude : GenericEntity
   // Foreign keys
   [Required] public Guid ClientId { get; private set; }
   [Required] public Guid TypeId { get; private set; }
-  public Guid? UserId { get; private set; }
+  public Guid? UserId { get; set; }
 
   [ForeignKey("ClientId")] public required Client Client { get; set; }
 }
