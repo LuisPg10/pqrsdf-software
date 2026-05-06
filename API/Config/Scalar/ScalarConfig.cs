@@ -10,8 +10,8 @@ public static class ScalarConfig
     {
       options
         .WithTitle("PQRSDF Documentation")
-        // .AddPreferredSecuritySchemes("BearerAuth")
-        // .AddHttpAuthentication("BearerAuth", auth => auth.Token = "")
+        .AddPreferredSecuritySchemes("BearerAuth")
+        .AddHttpAuthentication("BearerAuth", auth => auth.Token = "")
         .WithClassicLayout()
         .DisableAgent();
     });
