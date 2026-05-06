@@ -1,5 +1,6 @@
 using Application.Auth.Register;
 using Application.Clients.CreatePQRSDF;
+using Application.Users.GetPQRSDFDetails;
 using Domain.Entities.Solicitudes;
 using Domain.Entities.Users;
 
@@ -9,8 +10,11 @@ public static class MapsterConfig
 {
   public static void RegisterMappings()
   {
-    // User mappings
+    // Solicitude mappings
     TypeAdapterConfig<Solicitude, CreatePQRSDFCommandDto>.NewConfig().TwoWays();
+    TypeAdapterConfig<Solicitude, DetailsSolicitudeDto>.NewConfig().TwoWays();
+
+    // User mappings
     TypeAdapterConfig<User, RegisterCommandDto>.NewConfig().TwoWays();
   }
 }
