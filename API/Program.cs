@@ -1,3 +1,4 @@
+using API.Config.Scalar;
 using API.Extensions;
 using API.Services;
 using Application.Services;
@@ -23,6 +24,7 @@ if (app.Environment.IsDevelopment())
 {
   app.ApplyMigrations();
   app.MapOpenApi();
+  ScalarConfig.Config(app);
 }
 
 app.UseHttpsRedirection();
