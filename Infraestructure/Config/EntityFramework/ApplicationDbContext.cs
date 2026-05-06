@@ -1,4 +1,5 @@
 using Domain.Entities.Clients;
+using Domain.Entities.SolicitudeResponses;
 using Domain.Entities.Solicitudes;
 using Domain.Entities.Users;
 using Domain.Primitives;
@@ -13,6 +14,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     // tables configuration
     modelBuilder.Entity<Client>(entity => entity.Property(client => client.Id).ValueGeneratedOnAdd());
     modelBuilder.Entity<Solicitude>(entity => entity.Property(s => s.Id).ValueGeneratedOnAdd());
+    modelBuilder.Entity<SolicitudeResponse>(entity => entity.Property(s => s.Id).ValueGeneratedOnAdd());
     modelBuilder.Entity<User>(entity => entity.Property(u => u.Id).ValueGeneratedOnAdd());
     modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
   }
@@ -36,5 +38,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
   public DbSet<Client> Clients { get; set; }
   public DbSet<Solicitude> Solicitudes { get; set; }
+  public DbSet<SolicitudeResponse> SolicitudeResponses { get; set; }
   public DbSet<User> Users { get; set; }
 }

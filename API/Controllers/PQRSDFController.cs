@@ -3,6 +3,7 @@ using Application.Clients.GetPQRSDF;
 using Application.Users.AssignPQRSDF;
 using Application.Users.ChangePQRSDFState;
 using Application.Users.GetPQRSDFDetails;
+using Application.Users.MakePQRSDFResponse;
 using Domain.Entities.Solicitudes;
 using Mapster;
 
@@ -99,6 +100,26 @@ public class PQRSDFController(ISender mediator) : ApiController
 
     return result.Match(
       _ => NoContent(),
+      Problem
+    );
+  }
+
+  [HttpPost("{id}/response")]
+  [ProducesResponseType(StatusCodes.Status201Created)]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  [ProducesResponseType(StatusCodes.Status403Forbidden)]
+  [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+  [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+  public async Task<IActionResult> MakeResponse(
+    string id,
+    [FromBody] MakePQRSDFCommandDto command,
+    CancellationToken cancellationToken
+  )
+  {
+    var result = await mediator.Send(command with { Id = Guid.Parse(id) }, cancellationToken);
+
+    return result.Match(
+      response => Created(string.Empty, response),
       Problem
     );
   }
