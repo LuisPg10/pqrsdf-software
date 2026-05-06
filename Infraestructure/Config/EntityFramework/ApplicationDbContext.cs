@@ -1,5 +1,6 @@
 using Domain.Entities.Clients;
 using Domain.Entities.Solicitudes;
+using Domain.Entities.Users;
 using Domain.Primitives;
 
 namespace Infraestructure.Config.EntityFramework;
@@ -12,6 +13,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     // tables configuration
     modelBuilder.Entity<Client>(entity => entity.Property(client => client.Id).ValueGeneratedOnAdd());
     modelBuilder.Entity<Solicitude>(entity => entity.Property(s => s.Id).ValueGeneratedOnAdd());
+    modelBuilder.Entity<User>(entity => entity.Property(u => u.Id).ValueGeneratedOnAdd());
   }
 
   public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
@@ -33,4 +35,5 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
   public DbSet<Client> Clients { get; set; }
   public DbSet<Solicitude> Solicitudes { get; set; }
+  public DbSet<User> Users { get; set; }
 }
