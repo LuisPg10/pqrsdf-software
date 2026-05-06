@@ -1,4 +1,4 @@
-using Domain.Entities.Client;
+using Domain.Entities.Clients;
 using Domain.Shared.Repositories;
 
 namespace Domain.Repositories;

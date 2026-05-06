@@ -1,4 +1,4 @@
-namespace Domain.Entities.Client;
+namespace Domain.Entities.Clients;
 
 public class Client
 {
