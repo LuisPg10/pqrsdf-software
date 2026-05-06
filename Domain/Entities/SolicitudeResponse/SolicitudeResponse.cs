@@ -1,6 +1,6 @@
-namespace Domain.Entities.Response;
+namespace Domain.Entities.SolicitudeResponse;
 
-public class Response
+public class SolicitudeResponse
 {
   [Required] public Guid Id { get; private set; } = Guid.NewGuid();
   [Required] public string Content { get; private set; } = string.Empty;
