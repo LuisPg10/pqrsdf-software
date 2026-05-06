@@ -1,7 +1,10 @@
 using Application.Clients.CreatePQRSDF;
 using Application.Clients.GetPQRSDF;
 using Application.Users.AssignPQRSDF;
+using Application.Users.ChangePQRSDFState;
 using Application.Users.GetPQRSDFDetails;
+using Domain.Entities.Solicitudes;
+using Mapster;
 
 namespace API.Controllers;
 
@@ -69,6 +72,29 @@ public class PQRSDFController(ISender mediator) : ApiController
   public async Task<IActionResult> Assign([FromQuery] string userId, string id, CancellationToken cancellationToken)
   {
     var command = new AssignPQRSDFCommandDto() { SolicitudeId = Guid.Parse(id), FunctionaryId = Guid.Parse(userId) };
+    var result = await mediator.Send(command, cancellationToken);
+
+    return result.Match(
+      _ => NoContent(),
+      Problem
+    );
+  }
+
+  [HttpPatch("{id}/status")]
+  [ProducesResponseType(StatusCodes.Status204NoContent)]
+  [ProducesResponseType(StatusCodes.Status404NotFound)]
+  [ProducesResponseType(StatusCodes.Status403Forbidden)]
+  [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+  [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+  public async Task<IActionResult> ChangeState(string id, [FromQuery] int newStatus,
+    CancellationToken cancellationToken)
+  {
+    var command = new ChangePQRSDFStateCommandDto
+    {
+      Id = Guid.Parse(id),
+      NewStatus = newStatus
+    };
+
     var result = await mediator.Send(command, cancellationToken);
 
     return result.Match(

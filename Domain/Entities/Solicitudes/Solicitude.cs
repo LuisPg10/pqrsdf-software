@@ -10,7 +10,7 @@ public class Solicitude : GenericEntity
   [Required] public string Description { get; private set; } = string.Empty;
   [Required] public DateTime DateSolicitude { get; private set; } = DateTime.UtcNow;
   [Required] public string FiledNumber { get; private set; } = string.Empty;
-  [Required] public SolicitudeStatusEnum Status { get; private set; }
+  [Required] public SolicitudeStatusEnum Status { get; set; }
 
   // Foreign keys
   [Required] public Guid ClientId { get; private set; }

@@ -1,8 +1,9 @@
+using Domain.Generics;
+
 namespace Domain.Entities.SolicitudeResponses;
 
-public class SolicitudeResponse
+public class SolicitudeResponse : GenericEntity
 {
-  [Required] public Guid Id { get; private set; } = Guid.NewGuid();
   [Required] public string Content { get; private set; } = string.Empty;
   [Required] public DateTime Date { get; private set; } = DateTime.UtcNow;
 
