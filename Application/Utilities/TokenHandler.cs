@@ -18,7 +18,7 @@ public class TokenHandler(IConfiguration configuration) : ITokenHandler
 
   public string GenerateJwt(User user, int option)
   {
-    var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:key"]!));
+    var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["ApiSettings:SecretKey"]!));
     var credentias = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
 

@@ -11,4 +11,9 @@ public class UserRepository(ApplicationDbContext db) : GenericRepository<User>(d
   {
     return db.Users.FirstOrDefaultAsync(u => u.Email == email && u.Password == password);
   }
+
+  public Task<bool> UserExists(string email)
+  {
+    return db.Users.AnyAsync(u => u.Email == email);
+  }
 }

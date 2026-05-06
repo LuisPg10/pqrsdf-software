@@ -6,4 +6,5 @@ namespace Domain.Repositories;
 public interface IUserRepository : IGenericRepository<User>
 {
   Task<User?> GetUserByEmailOrPassword(string email, string password);
+  Task<bool> UserExists(string email);
 }
