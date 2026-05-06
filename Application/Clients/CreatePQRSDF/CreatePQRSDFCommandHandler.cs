@@ -9,9 +9,10 @@ public class CreatePQRSDFCommandHandler(
   ISolicitudeRepository solicitudeRepository,
   IClientRepository clientRepository,
   IUnitOfWork unitOfWork)
-  : IRequestHandler<CreatePQRSDFCommandDto, Unit>
+  : IRequestHandler<CreatePQRSDFCommandDto, ErrorOr<SolicitudeResponseDto>>
 {
-  public async Task<Unit> Handle(CreatePQRSDFCommandDto solicitudeDto, CancellationToken cancellationToken)
+  public async Task<ErrorOr<SolicitudeResponseDto>> Handle(CreatePQRSDFCommandDto solicitudeDto,
+    CancellationToken cancellationToken)
   {
     var client = solicitudeDto.Client.Adapt<Client>();
     clientRepository.Create(client);
@@ -21,6 +22,9 @@ public class CreatePQRSDFCommandHandler(
 
     await unitOfWork.SaveChangesAsync(cancellationToken);
 
-    return Unit.Value;
+    return new SolicitudeResponseDto
+    {
+      FiledNumber = solicitude.FiledNumber
+    };
   }
 }

@@ -2,7 +2,7 @@ using Domain.Entities.Solicitudes;
 
 namespace Application.Clients.CreatePQRSDF;
 
-public record CreatePQRSDFCommandDto : IRequest<Unit>
+public record CreatePQRSDFCommandDto : IRequest<ErrorOr<SolicitudeResponseDto>>
 {
   [Required(ErrorMessage = "Area is required")]
   public AreaEnum Area { get; init; }
