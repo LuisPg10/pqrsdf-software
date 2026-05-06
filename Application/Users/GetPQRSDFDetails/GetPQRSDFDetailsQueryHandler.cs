@@ -9,7 +9,7 @@ public class GetPQRSDFDetailsQueryHandler(ISolicitudeRepository solicitudReposit
     CancellationToken cancellationToken)
   {
     var solicitude = await solicitudRepository.ListById(request.Id);
-    if (solicitude == null) return Error.NotFound("Solicitude.NotFound", "Solicitude Not found.");
+    if (solicitude == null) return Error.NotFound("PQRSDF.NotFound", "PQRSDF not found.");
 
     return solicitude.Adapt<DetailsSolicitudeDto>();
   }
