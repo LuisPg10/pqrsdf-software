@@ -3,4 +3,7 @@ using Domain.Shared.Repositories;
 
 namespace Domain.Repositories;
 
-public interface ISolicitudeRepository : IGenericRepository<Solicitude>;
+public interface ISolicitudeRepository : IGenericRepository<Solicitude>
+{
+  Task<Solicitude?> GetSolicitudeByFiledNumber(string filedNumber);
+}
