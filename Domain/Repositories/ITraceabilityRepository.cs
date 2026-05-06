@@ -1,4 +1,4 @@
-using Domain.Entities.Traceability;
+using Domain.Entities.Traceabilities;
 using Domain.Shared.Repositories;
 
 namespace Domain.Repositories;

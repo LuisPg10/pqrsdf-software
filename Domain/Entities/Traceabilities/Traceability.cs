@@ -1,6 +1,6 @@
 using Domain.Entities.Solicitudes;
 
-namespace Domain.Entities.Traceability;
+namespace Domain.Entities.Traceabilities;
 
 public class Traceability
 {
