@@ -1,4 +1,4 @@
-namespace Domain.Entities.SolicitudeResponse;
+namespace Domain.Entities.SolicitudeResponses;
 
 public class SolicitudeResponse
 {

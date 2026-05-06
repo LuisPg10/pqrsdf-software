@@ -1,4 +1,4 @@
-using Domain.Entities.SolicitudeResponse;
+using Domain.Entities.SolicitudeResponses;
 using Domain.Shared.Repositories;
 
 namespace Domain.Repositories;
