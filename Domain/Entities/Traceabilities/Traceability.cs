@@ -13,4 +13,6 @@ public class Traceability
 
   // Foreign keys
   [Required] public Guid SolicitudeId { get; private set; }
+
+  [ForeignKey("SolicitudeId")] public required Solicitude Solicitude { get; set; }
 }

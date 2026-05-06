@@ -1,4 +1,5 @@
 using Domain.Entities.Clients;
+using Domain.Entities.SolicitudeResponses;
 using Domain.Generics;
 
 namespace Domain.Entities.Solicitudes;
@@ -18,4 +19,7 @@ public class Solicitude : GenericEntity
   public Guid? UserId { get; set; }
 
   [ForeignKey("ClientId")] public required Client Client { get; set; }
+  [ForeignKey("TypeId")] public required SolicitudeType Type { get; set; }
+
+  public ICollection<SolicitudeResponse> Responses { get; private set; } = [];
 }

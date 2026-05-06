@@ -6,6 +6,6 @@ public enum AreaEnum
   HumanResources,
   Legal,
   Operations,
-  IT,
+  It,
   Finance
 }
