@@ -1,11 +1,11 @@
 using Domain.Entities.Areas;
 using Domain.Entities.Clients;
+using Domain.Entities.FiledCounters;
 using Domain.Entities.SolicitudeResponses;
 using Domain.Entities.Solicitudes;
 using Domain.Entities.Traceabilities;
 using Domain.Entities.Users;
 using Domain.Primitives;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -14,7 +14,8 @@ namespace Infraestructure.Config.EntityFramework;
 public class ApplicationDbContext(
   DbContextOptions<ApplicationDbContext> options,
   IPublisher publisher,
-  IHttpContextAccessor httpContextAccessor)
+  IHttpContextAccessor httpContextAccessor
+)
   : DbContext(options), IUnitOfWork
 {
   protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -39,7 +40,7 @@ public class ApplicationDbContext(
     modelBuilder.Entity<User>(entity => entity.Property(u => u.Id).ValueGeneratedOnAdd());
     modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
 
-    // Configuraci�n de Traceability
+    // traceability configuration
     modelBuilder.Entity<Traceability>(entity =>
     {
       entity.ToTable("Traceabilities");
@@ -50,11 +51,24 @@ public class ApplicationDbContext(
       entity.HasIndex(t => t.SolicitudeId);
       entity.HasIndex(t => t.CreationDate);
     });
+
+    modelBuilder.Entity<Solicitude>()
+      .HasMany(s => s.Traceabilities)
+      .WithOne(t => t.Solicitude)
+      .HasForeignKey(t => t.SolicitudeId)
+      .OnDelete(DeleteBehavior.Cascade);
+
+    modelBuilder.Entity<Solicitude>()
+      .HasMany(s => s.Responses)
+      .WithOne(t => t.Solicitude)
+      .HasForeignKey(t => t.SolicitudeId)
+      .OnDelete(DeleteBehavior.Cascade);
   }
 
   public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
   {
-    var user = httpContextAccessor.HttpContext?.User?.Identity?.Name ?? "system";
+    var user = httpContextAccessor.HttpContext?.User.Identity?.Name ?? "system";
+
     foreach (var entry in ChangeTracker.Entries<AggregateRoot>())
     {
       entry.Entity.SetOperationContext(user);
@@ -108,4 +122,5 @@ public class ApplicationDbContext(
   public DbSet<User> Users { get; set; }
   public DbSet<Area> Areas { get; set; }
   public DbSet<Traceability> Traceabilities { get; set; }
+  public DbSet<FiledCounter> FiledCounters { get; set; }
 }

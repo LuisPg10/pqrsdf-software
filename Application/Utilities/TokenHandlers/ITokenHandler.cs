@@ -1,6 +1,6 @@
 using Domain.Entities.Users;
 
-namespace Application.Utilities;
+namespace Application.Utilities.TokenHandlers;
 
 public interface ITokenHandler
 {

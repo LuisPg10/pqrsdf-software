@@ -1,11 +1,9 @@
-using Domain.Entities.Solicitudes;
-
 namespace Application.Clients.CreatePQRSDF;
 
 public record CreatePQRSDFCommandDto : IRequest<ErrorOr<SolicitudeResponseDto>>
 {
   [Required(ErrorMessage = "Area is required")]
-  public AreaEnum Area { get; init; }
+  public Guid AreaId { get; init; }
 
   [Required(ErrorMessage = "Subject is required")]
   public string Subject { get; init; } = string.Empty;

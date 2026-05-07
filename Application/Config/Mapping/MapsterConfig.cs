@@ -3,6 +3,7 @@ using Application.Clients.CreatePQRSDF;
 using Application.Clients.GetPQRSDF;
 using Application.Users.ChangePQRSDFState;
 using Application.Users.GetPQRSDFDetails;
+using Domain.Entities.Clients;
 using Domain.Entities.SolicitudeResponses;
 using Domain.Entities.Solicitudes;
 using Domain.Entities.Users;
@@ -23,5 +24,8 @@ public static class MapsterConfig
 
     // User mappings
     TypeAdapterConfig<User, RegisterCommandDto>.NewConfig().TwoWays();
+
+    // Client
+    TypeAdapterConfig<Client, ClientCommandDto>.NewConfig().TwoWays();
   }
 }

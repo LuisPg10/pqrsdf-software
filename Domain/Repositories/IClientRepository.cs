@@ -3,4 +3,7 @@ using Domain.Shared.Repositories;
 
 namespace Domain.Repositories;
 
-public interface IClientRepository : IGenericRepository<Client>;
+public interface IClientRepository : IGenericRepository<Client>
+{
+  Task<Client?> GetByEmail(string email);
+}

@@ -1,5 +1,8 @@
 using Application.Config.Mapping;
 using Application.Utilities;
+using Application.Utilities.CurrentUsers;
+using Application.Utilities.Holidays;
+using Application.Utilities.TokenHandlers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Services;
@@ -17,6 +20,8 @@ public static class DependencyInjection
     MapsterConfig.RegisterMappings();
 
     services.AddScoped<ITokenHandler, TokenHandler>();
+    services.AddScoped<IHolidayService, HolidayService>();
+    services.AddScoped<ICurrentUserService, CurrentUserService>();
 
     return services;
   }

@@ -1,6 +1,8 @@
+using Application.Utilities.IFiledGenerators;
 using Domain.Primitives;
 using Domain.Repositories;
 using Infraestructure.Persistence.Repositories;
+using Infraestructure.Shared;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,7 +25,7 @@ public static class DependencyInjection
     services.AddScoped<ISolicitudeResponseRepository, SolicitudeResponseRepository>();
     services.AddScoped<IAreaRepository, AreaRepository>();
     services.AddScoped<ISolicitudeTypeRepository, SolicitudeTypeRepository>();
-
+    services.AddScoped<IFiledGenerator, FiledGenerator>();
 
     return services;
   }

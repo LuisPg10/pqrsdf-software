@@ -5,7 +5,7 @@ using Domain.Entities.Users;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Application.Utilities;
+namespace Application.Utilities.TokenHandlers;
 
 public class TokenHandler(IConfiguration configuration) : ITokenHandler
 {
