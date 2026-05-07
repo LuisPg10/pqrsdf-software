@@ -1,3 +1,4 @@
+using Domain.Entities.Areas;
 using Domain.Entities.Clients;
 using Domain.Entities.SolicitudeResponses;
 using Domain.Entities.Solicitudes;
@@ -105,5 +106,6 @@ public class ApplicationDbContext(
   public DbSet<SolicitudeResponse> SolicitudeResponses { get; set; }
   public DbSet<SolicitudeType> SolicitudeTypes { get; set; }
   public DbSet<User> Users { get; set; }
+  public DbSet<Area> Areas { get; set; }
   public DbSet<Traceability> Traceabilities { get; set; }
 }

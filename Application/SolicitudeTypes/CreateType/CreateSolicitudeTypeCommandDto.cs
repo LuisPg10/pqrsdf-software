@@ -1,7 +1,7 @@
 ﻿
 namespace Application.SolicitudeTypes.CreateType
 {
-    public record CreateTypeSolicitudeCommandDto : IRequest<ErrorOr<Unit>>
+    public record CreateTypeSolicitudeCommandDto : IRequest<ErrorOr<CreateSolicitudeTypeResponseDto>>
     {
         [Required(ErrorMessage = "Solicitude type name is required.")]
         [MinLength(3, ErrorMessage = "Name must have at least 3 characters.")]

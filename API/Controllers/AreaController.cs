@@ -15,8 +15,9 @@ namespace API.Controllers
     {
       var result = await mediator.Send(request);
       return result.Match(
-        _ => CreatedAtAction(string.Empty, new { }),
-        errors => Problem(errors));
+        _ => Created(string.Empty, new { }),
+        Problem
+      );
     }
 
     [HttpGet]
@@ -27,7 +28,8 @@ namespace API.Controllers
       var result = await mediator.Send(new GetAllAreaQueryDto());
       return result.Match(
         areas => Ok(areas),
-        errors => Problem(errors));
+        Problem
+      );
     }
   }
 }

@@ -3,31 +3,35 @@ using Application.SolicitudeTypes.GetAll;
 
 namespace API.Controllers
 {
-    [Authorize(Roles = "Admin,Functionary")]
-    [Route("api/[controller]")]
-    public class SolicitudeTypeController(ISender mediator) : ApiController
+  [Authorize(Roles = "Admin,Functionary")]
+  [Route("api/[controller]")]
+  public class SolicitudeTypeController(ISender mediator) : ApiController
+  {
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> CreateArea([FromBody] CreateTypeSolicitudeCommandDto request)
     {
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateArea([FromBody] CreateTypeSolicitudeCommandDto request)
-        {
-            var result = await mediator.Send(request);
-            return result.Match(
-                _ => CreatedAtAction(string.Empty, new { }),
-                errors => Problem(errors));
-        }
+      var result = await mediator.Send(request);
 
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetAllAreas()
-        {
-            var result = await mediator.Send(new GetAllSolicitudeTypeQueryDto());
-            return result.Match(
-                areas => Ok(areas),
-                errors => Problem(errors));
-        }
+      return result.Match(
+        response => Created(string.Empty, response),
+        Problem
+      );
     }
+
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> GetAllAreas()
+    {
+      var result = await mediator.Send(new GetAllSolicitudeTypeQueryDto());
+
+      return result.Match(
+        Ok,
+        Problem
+      );
+    }
+  }
 }
