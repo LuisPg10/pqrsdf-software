@@ -1,3 +1,4 @@
+using Application.Utilities.CurrentUsers;
 using Domain.Entities.SolicitudeResponses;
 using Domain.Entities.Solicitudes;
 using Domain.Primitives;
@@ -7,17 +8,27 @@ namespace Application.Users.ChangePQRSDFState;
 
 public class ChangePQRSDFStateCommandHandler(
   ISolicitudeRepository solicitudeRepository,
-  IUnitOfWork unitOfWork) : IRequestHandler<ChangePQRSDFStateCommandDto, ErrorOr<Unit>>
+  ICurrentUserService currentUserService,
+  IUnitOfWork unitOfWork
+) : IRequestHandler<ChangePQRSDFStateCommandDto, ErrorOr<Unit>>
 {
   public async Task<ErrorOr<Unit>> Handle(ChangePQRSDFStateCommandDto request,
     CancellationToken cancellationToken)
   {
-    var solitude = await solicitudeRepository.ListById(request.Id);
-    if (solitude == null) return Error.NotFound("Solicituded.NotFound", "Solitude not found");
+    var solicitude = await solicitudeRepository.ListById(request.Id);
+    if (solicitude == null) return Error.NotFound("Solicituded.NotFound", "Solitude not found");
 
-    solitude.Status = (SolicitudeStatusEnum)request.NewStatus;
+    if (solicitude.Status == SolicitudeStatusEnum.Completed)
+    {
+      return Error.Failure("Solicituded.Failure", "Cannot change status of a completed solicitude");
+    }
 
-    solicitudeRepository.Update(solitude);
+
+    var currentUser = currentUserService.GetCurrentUserName();
+
+    solicitude.ChangeStatus(request.NewStatus, currentUser, request.Justification);
+
+    solicitudeRepository.Update(solicitude);
     await unitOfWork.SaveChangesAsync(cancellationToken);
 
     return Unit.Value;

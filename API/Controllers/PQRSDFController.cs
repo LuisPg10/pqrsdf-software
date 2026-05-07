@@ -1,5 +1,6 @@
 using Application.Clients.CreatePQRSDF;
 using Application.Clients.GetPQRSDF;
+using Application.Traceabilities.GetAllByIdPQRDSF;
 using Application.Users.AssignPQRSDF;
 using Application.Users.ChangePQRSDFState;
 using Application.Users.GetPQRSDFDetails;
@@ -87,7 +88,7 @@ public class PQRSDFController(ISender mediator) : ApiController
   [ProducesResponseType(StatusCodes.Status403Forbidden)]
   [ProducesResponseType(StatusCodes.Status401Unauthorized)]
   [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-  public async Task<IActionResult> ChangeState(string id, [FromQuery] int newStatus,
+  public async Task<IActionResult> ChangeState(string id, [FromQuery] SolicitudeStatusEnum newStatus,
     CancellationToken cancellationToken)
   {
     var command = new ChangePQRSDFStateCommandDto
@@ -120,6 +121,23 @@ public class PQRSDFController(ISender mediator) : ApiController
 
     return result.Match(
       response => Created(string.Empty, response),
+      Problem
+    );
+  }
+
+  [HttpGet("{id}/traceability")]
+  [ProducesResponseType(StatusCodes.Status200OK)]
+  [ProducesResponseType(StatusCodes.Status404NotFound)]
+  [ProducesResponseType(StatusCodes.Status403Forbidden)]
+  [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+  [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+  public async Task<IActionResult> GetTrazabilities(Guid id, CancellationToken cancellationToken)
+  {
+    var command = new GetAllByIdPQRDSFQueryDto(id);
+    var result = await mediator.Send(command, cancellationToken);
+
+    return result.Match(
+      Ok,
       Problem
     );
   }

@@ -1,3 +1,4 @@
+using Application.Shared.Dtos;
 using Domain.Repositories;
 
 namespace Application.Clients.GetPQRSDF;
@@ -16,8 +17,8 @@ public class GetPQRSDFQueryHandler(ISolicitudeRepository solicitudeRepository)
       DateSolicitude = solicitude.DateSolicitude,
       ExpirationDate = DateTime.Now.AddDays(30),
       Days = 20,
-      HasResponse = false,
-      Response = null
+      HasResponses = solicitude.Responses.Count != 0,
+      Responses = solicitude.Responses.Select(response => response.Adapt<SolicitudeRespondeDto>()).ToList()
     };
   }
 }

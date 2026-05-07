@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infraestructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260506153620_EnumsWords")]
-    partial class EnumsWords
+    [Migration("20260507075039_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,27 @@ namespace Infraestructure.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Domain.Entities.Areas.Area", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Areas");
+                });
 
             modelBuilder.Entity("Domain.Entities.Clients.Client", b =>
                 {
@@ -52,6 +73,29 @@ namespace Infraestructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Clients");
+                });
+
+            modelBuilder.Entity("Domain.Entities.FiledCounters.FiledCounter", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LastNumber")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FiledCounters");
                 });
 
             modelBuilder.Entity("Domain.Entities.SolicitudeResponses.SolicitudeResponse", b =>
@@ -94,9 +138,8 @@ namespace Infraestructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Area")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("AreaId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ClientId")
                         .HasColumnType("uniqueidentifier");
@@ -110,6 +153,9 @@ namespace Infraestructure.Persistence.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("FiledNumber")
                         .IsRequired()
@@ -134,6 +180,8 @@ namespace Infraestructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AreaId");
+
                     b.HasIndex("ClientId");
 
                     b.HasIndex("TypeId");
@@ -147,6 +195,9 @@ namespace Infraestructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -154,9 +205,54 @@ namespace Infraestructure.Persistence.Migrations
                     b.Property<int>("Time")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.ToTable("SolicitudeTypes");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Traceabilities.Traceability", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("LastStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("NewStatus")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("SolicitudeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("User")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreationDate");
+
+                    b.HasIndex("SolicitudeId");
+
+                    b.ToTable("Traceabilities", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Users.User", b =>
@@ -220,6 +316,12 @@ namespace Infraestructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Solicitudes.Solicitude", b =>
                 {
+                    b.HasOne("Domain.Entities.Areas.Area", "Area")
+                        .WithMany()
+                        .HasForeignKey("AreaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.Clients.Client", "Client")
                         .WithMany()
                         .HasForeignKey("ClientId")
@@ -232,14 +334,29 @@ namespace Infraestructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Area");
+
                     b.Navigation("Client");
 
                     b.Navigation("Type");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Traceabilities.Traceability", b =>
+                {
+                    b.HasOne("Domain.Entities.Solicitudes.Solicitude", "Solicitude")
+                        .WithMany("Traceabilities")
+                        .HasForeignKey("SolicitudeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Solicitude");
+                });
+
             modelBuilder.Entity("Domain.Entities.Solicitudes.Solicitude", b =>
                 {
                     b.Navigation("Responses");
+
+                    b.Navigation("Traceabilities");
                 });
 #pragma warning restore 612, 618
         }

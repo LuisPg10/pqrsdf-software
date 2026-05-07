@@ -1,15 +1,18 @@
+using Application.Shared.Dtos;
 using Domain.Entities.Solicitudes;
+using AreaResponseDto = Application.Areas.Common.AreaResponseDto;
 
 namespace Application.Users.GetPQRSDFDetails;
 
-public class DetailsSolicitudeDto
-{
-  public AreaEnum Area { get; private set; }
-  public string Subject { get; private set; } = string.Empty;
-  public string Description { get; private set; } = string.Empty;
-  public DateTime DateSolicitude { get; private set; } = DateTime.UtcNow;
-  public string FiledNumber { get; private set; } = string.Empty;
-  public SolicitudeStatusEnum Status { get; private set; }
-  public Guid ClientId { get; private set; }
-  public Guid TypeId { get; private set; }
-}
+public record DetailsSolicitudeDto(
+  Guid Id,
+  AreaResponseDto Area,
+  string Subject,
+  string Description,
+  DateTime DateSolicitude,
+  string FiledNumber,
+  SolicitudeStatusEnum Status,
+  ClientResponseDto Client,
+  SolicitudeTypeResponseDto Type,
+  List<SolicitudeRespondeDto> SolicitudeResponde
+);

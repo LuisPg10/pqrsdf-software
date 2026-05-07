@@ -10,7 +10,7 @@ namespace Application.Areas.Create
         {
             var alreadyExists = await areaRepository.ExistsByNameAsync(request.Name, cancellationToken);
             if (alreadyExists)
-                return Error.Validation("Area.AlreadyExists", "An area with this name already exists");
+                return Error.Validation("AreaId.AlreadyExists", "An area with this name already exists");
 
             var area = request.Adapt<Area>();
 

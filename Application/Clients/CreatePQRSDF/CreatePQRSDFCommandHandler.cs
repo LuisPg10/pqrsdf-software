@@ -24,7 +24,7 @@ public class CreatePQRSDFCommandHandler(
     CancellationToken cancellationToken)
   {
     var area = await areaRepository.ListById(request.AreaId);
-    if (area == null) return Error.NotFound("Area.NotFound", "The specified area was not found");
+    if (area == null) return Error.NotFound("AreaId.NotFound", "The specified area was not found");
 
     var solicitudeType = await solicitudeTypeRepository.ListById(request.TypeId);
     if (solicitudeType == null)

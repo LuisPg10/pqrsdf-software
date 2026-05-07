@@ -1,3 +1,4 @@
+using Application.Shared.Dtos;
 using Domain.Entities.SolicitudeResponses;
 using Domain.Entities.Solicitudes;
 
@@ -9,6 +10,6 @@ public record PQRSDFResponseDto
   public DateTime DateSolicitude { get; set; }
   public DateTime ExpirationDate { get; set; }
   public int Days { get; set; }
-  public bool HasResponse { get; set; }
-  public SolicitudeResponse? Response { get; set; }
+  public bool HasResponses { get; set; }
+  public List<SolicitudeRespondeDto> Responses { get; set; } = [];
 }

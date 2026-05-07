@@ -13,11 +13,12 @@ public class SolicitudeRepository(ApplicationDbContext db) : GenericRepository<S
       .Include(so => so.Type)
       .Include(so => so.Area)
       .Include(so => so.Responses)
+      .ThenInclude(res => res.User)
       .Include(so => so.Traceabilities);
   }
 
   public async Task<Solicitude?> GetSolicitudeByFiledNumber(string filedNumber)
   {
-    return await db.Solicitudes.FirstOrDefaultAsync(s => s.FiledNumber == filedNumber);
+    return await ListAll().FirstOrDefaultAsync(s => s.FiledNumber == filedNumber);
   }
 }

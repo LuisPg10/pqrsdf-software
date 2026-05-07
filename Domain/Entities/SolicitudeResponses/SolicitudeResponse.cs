@@ -15,4 +15,18 @@ public class SolicitudeResponse : GenericEntity
 
   [Required] public Guid UserId { get; private set; }
   [ForeignKey("UserId")] public User User { get; set; }
+
+  public static SolicitudeResponse Create(string content, Guid solicitudeId, Guid userId)
+  {
+    return new SolicitudeResponse
+    {
+      Id = Guid.NewGuid(),
+      Content = content,
+      Date = DateTime.UtcNow,
+      SolicitudeId = solicitudeId,
+      UserId = userId,
+      CreatedAt = DateTime.UtcNow,
+      UpdatedAt = DateTime.UtcNow
+    };
+  }
 }

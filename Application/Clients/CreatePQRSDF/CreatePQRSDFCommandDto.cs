@@ -2,7 +2,7 @@ namespace Application.Clients.CreatePQRSDF;
 
 public record CreatePQRSDFCommandDto : IRequest<ErrorOr<SolicitudeResponseDto>>
 {
-  [Required(ErrorMessage = "Area is required")]
+  [Required(ErrorMessage = "AreaId is required")]
   public Guid AreaId { get; init; }
 
   [Required(ErrorMessage = "Subject is required")]

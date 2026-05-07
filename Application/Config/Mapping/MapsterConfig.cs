@@ -1,8 +1,10 @@
 using Application.Auth.Register;
 using Application.Clients.CreatePQRSDF;
 using Application.Clients.GetPQRSDF;
+using Application.Shared.Dtos;
 using Application.Users.ChangePQRSDFState;
 using Application.Users.GetPQRSDFDetails;
+using Application.Users.MakePQRSDFResponse;
 using Domain.Entities.Clients;
 using Domain.Entities.SolicitudeResponses;
 using Domain.Entities.Solicitudes;
@@ -21,6 +23,9 @@ public static class MapsterConfig
 
     // Solicitude response mappings
     TypeAdapterConfig<SolicitudeResponse, PQRSDFResponseDto>.NewConfig().TwoWays();
+    TypeAdapterConfig<SolicitudeResponse, MakePQRSDFCommandDto>.NewConfig().TwoWays();
+    TypeAdapterConfig<SolicitudeResponse, SolicitudeRespondeDto>.NewConfig().TwoWays();
+
 
     // User mappings
     TypeAdapterConfig<User, RegisterCommandDto>.NewConfig().TwoWays();
